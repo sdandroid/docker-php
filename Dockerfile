@@ -1,4 +1,8 @@
 FROM php:apache
-RUN a2enmod rewrite
+ENV PHPREDIS_VERSION=2.2.7
+RUN cd /usr/src/php/ext \
+    && curl -q https://codeload.github.com/phpredis/phpredis/tar.gz/$PHPREDIS_VERSION | tar -xz \
+    && docker-php-ext-install phpredis-$PHPREDIS_VERSION \
+    && a2enmod rewrite
 EXPOSE 80
 CMD ["apache2-foreground"]
